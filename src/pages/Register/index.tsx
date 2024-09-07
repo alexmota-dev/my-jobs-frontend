@@ -8,7 +8,7 @@ import { theme } from '../../Theme';
 import { AuthContext } from '../../contexts/auth';
 import { LoadingButton } from '@mui/lab';
 
-interface ErrorsValidation {
+interface ErrorsValidationRegister {
   email?: string;
   name?: string;
   password?: string;
@@ -20,7 +20,7 @@ export const Register = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [errorsValidation, setErrorsValidation] = useState<ErrorsValidation>({});
+  const [errorsValidation, setErrorsValidation] = useState<ErrorsValidationRegister>({});
   const [loading, setLoading] = React.useState(false);
 
   const context = useContext(AuthContext);

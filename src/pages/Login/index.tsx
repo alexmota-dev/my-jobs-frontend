@@ -8,11 +8,17 @@ import { theme } from '../../Theme';
 import { AuthContext } from '../../contexts/auth';
 import LoadingButton from '@mui/lab/LoadingButton';
 
+interface ErrorsValidationLogin {
+  email?: string;
+  password?: string;
+  // adicionar outras proprieades aqui depois
+}
+
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [errorsValidation, setErrorsValidation] = useState<any>({});
+  const [errorsValidation, setErrorsValidation] = useState<ErrorsValidationLogin>({});
   const [loading, setLoading] = React.useState(false);
 
   const context = useContext(AuthContext);
@@ -22,15 +28,23 @@ export const Login = () => {
 
   async function login() {
     setLoading(true);
-    setLoading(false);
-    try{
-      await context.login({email, password});
+    try {
+      await context.login({ email, password });
       setLoading(false);
-
-    }catch(e){
+    } catch (e: unknown) {
       setError('');
       setLoading(false);
-      setErrorsValidation(e);
+  
+      if (e instanceof Error) {
+        // Verifica se o erro é uma instância de Error e passa a mensagem ou qualquer outro dado relevante
+        setErrorsValidation({
+          email: e.message.includes('email') ? 'Invalid email' : undefined,
+          password: e.message.includes('password') ? 'Invalid password' : undefined,
+        });
+      } else {
+        console.log('Erro não identificado');
+      }
+  
       console.log(e);
     }
   }
