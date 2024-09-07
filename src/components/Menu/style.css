@@ -1,0 +1,32 @@
+.menu_admin {
+    background-color: #080f30; 
+    margin: 0; 
+    padding: 0
+}
+.option {
+    display: flex;
+    color: #FFF;
+    font-size: 1rem;
+    border-top: 1px solid #ffffff71;
+    padding: 0.4rem;
+    cursor: pointer;
+}
+.option_select {
+    display: flex;
+    color: #FFF;
+    font-size: 1rem;
+    background-color: #080f30a6;
+    border-top: 1px solid #ffffff71;
+    padding: 0.4rem;
+    cursor: pointer;
+}
+.option p {
+    margin-left: 1vw;
+}
+.option_select p {
+    margin-left: 1vw;
+}
+.option:hover {
+    font-weight: 700;
+    background-color: #080f30a6;
+}
