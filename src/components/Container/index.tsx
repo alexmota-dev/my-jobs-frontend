@@ -13,16 +13,28 @@ const Container = ({ children }: ContainerProps) => {
       <div
         className='container'
         style={{
-          width: '100%',
-          height: '100%',
+          backgroundColor: 'white',
+          height: '100vh', 
+          width: '100vw',
           display: 'flex',
           flexDirection: 'column',
+          margin: '0', 
         }}>
-        <Menu/>
-        {children}
+        <Menu />
+
+        <div 
+          className='content'
+          style={{
+            display: 'flex',
+            padding: '0.5vw'
+          }}>
+          {children}
+        </div>
+
       </div>
     </ThemeProvider>
   )
 }
+
 
 export default Container

@@ -8,7 +8,7 @@ interface PrivateRouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element: Component }) => {
   const { signed } = useContext(AuthContext);
-  return signed ? <Component /> : <Navigate to="/login" />;
+  return signed ? <Component /> : <Navigate to="/teste" />;
 };
 
 export default PrivateRoute;

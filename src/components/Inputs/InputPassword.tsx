@@ -10,8 +10,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { theme } from '../../Theme';
 import { ThemeProvider } from '@mui/material';
 
-export default function InputPassword({ onChange, error, value }: { onChange: Function, error?: string, value?: string }) {
-    const [showPassword, setShowPassword] = React.useState(false);
+export default function InputPassword({ onChange, error, value }: { onChange: (value: string) => void, error?: string, value?: string }) {    const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -28,7 +27,6 @@ export default function InputPassword({ onChange, error, value }: { onChange: Fu
               onChange={(e) => onChange(e.currentTarget.value)}
               value={value} 
               error={!!error}
-              color='primary'
 
               id="outlined-adornment-password"
               type={showPassword ? 'text' : 'password'}
