@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Container from '../../components/Container';
 import { findAll, remove } from '../../services/book';
 import { useNavigate } from 'react-router-dom';
@@ -16,13 +16,8 @@ export default function Home() {
   const navigate = useNavigate();
 
   const handleListPost = async () => {
-
-    try {
-      const findposts = await findAll();
-      setPosts(findposts);
-    } catch (error) {
-      throw error;
-    }
+    const findposts = await findAll();
+    setPosts(findposts);
   }
 
   const handleDelete = async(id: string) => {

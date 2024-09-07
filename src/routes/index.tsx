@@ -7,7 +7,6 @@ import { EnvelopCarousel } from '../components/Carousel/main';
 import { AuthContext } from '../contexts/auth';
 import PrivateRoute from './PrivateRoute';
 import { About } from '../pages/About';
-import { AddPosts } from '../pages/AddPosts';
 
 const Routes: React.FC = () => {
   const { signed } = useContext(AuthContext);
@@ -17,8 +16,6 @@ const Routes: React.FC = () => {
     { path: "/", element: <Home /> },
     { path: "/about", element: <PrivateRoute element={About} /> },
     { path: "/carousel", element: <PrivateRoute element={EnvelopCarousel} /> },
-    { path: "/add-books", element: <AddPosts /> },
-    { path: "/update-book/:id", element: <AddPosts /> },
     { path: "*", element: <Navigate to="/" /> }
   ]);
 

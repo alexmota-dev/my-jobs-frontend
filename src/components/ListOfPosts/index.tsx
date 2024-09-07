@@ -1,4 +1,3 @@
-import React from 'react';
 import { Post } from '../../services/types/Book';
 import PostCard from '../PostCard';
 

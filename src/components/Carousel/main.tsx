@@ -1,4 +1,3 @@
-import * as React from "react";
 import "./styles.css";
 import Container from "../Container";
 import { Carousel } from ".";

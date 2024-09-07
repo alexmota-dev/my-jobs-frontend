@@ -1,8 +1,13 @@
-import React from 'react';
 import { TextField, ThemeProvider } from '@mui/material';
 import { theme } from '../../Theme';
 
-export function InputTextField({ onChange, label, error, value, type }: { onChange: Function, label: string, error?: string, value?: string, type?: string }) {
+export function InputTextField({ onChange, label, error, value, type }: { 
+    onChange: (newValue: string) => void, 
+    label: string, 
+    error?: string, 
+    value?: string, 
+    type?: string 
+  }) {
     return (
         <ThemeProvider theme={theme}>
             <div style={{display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', width: '100%'}}>
