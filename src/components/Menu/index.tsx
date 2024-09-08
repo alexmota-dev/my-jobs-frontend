@@ -63,7 +63,6 @@ export function Menu() {
         >
           {context.signed ? (
             <Button
-              color='primary'
               variant="contained"
               endIcon={<LogoutIcon />}
               onClick={logout}>
