@@ -31,14 +31,12 @@ export default function InputPassword({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilled(event.target.value !== "");
-    onChange(event.currentTarget.value)
+    onChange(event.currentTarget.value);
   };
 
   return (
     <ThemeProvider theme={theme}>
-
       <FormControl sx={{ m: 1, width: "100%" }} variant="outlined">
-
         <InputLabel htmlFor="outlined-adornment-password">
           Digite sua senha
         </InputLabel>
@@ -59,17 +57,13 @@ export default function InputPassword({
           type={showPassword ? "text" : "password"}
           endAdornment={
             <InputAdornment position="end">
-              <IconButton                
+              <IconButton
                 aria-label="toggle password visibility"
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
                 edge="end"
               >
-                {showPassword ? (
-                  <VisibilityOff/>
-                ) : (
-                  <Visibility/>
-                )}
+                {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </InputAdornment>
           }
@@ -81,9 +75,7 @@ export default function InputPassword({
             {error}
           </FormHelperText>
         )}
-
       </FormControl>
-
     </ThemeProvider>
   );
 }
