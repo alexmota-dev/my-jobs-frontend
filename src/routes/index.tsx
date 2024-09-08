@@ -22,7 +22,7 @@ const Routes: React.FC = () => {
   const otherRoutes = createBrowserRouter([
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
-    { path: "*", element: <Navigate to="/login" /> }
+    { path: "*", element: <Navigate to="/teste" /> }
   ]);
 
   return <RouterProvider router={signed ? signedRoutes : otherRoutes} />;

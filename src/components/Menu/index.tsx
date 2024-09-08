@@ -18,9 +18,9 @@ export function Menu() {
   //Esse componete precisa ser responsivo em uma versão mobile
   return (
       <div
+        className='menu'
         style={{
           backgroundColor: theme.palette.primary.main,
-          width: '100%',
           height: '10vh',
           display: 'flex',
           justifyContent: 'space-between',
@@ -28,7 +28,8 @@ export function Menu() {
           alignContent: 'center',
           flexWrap: 'wrap',
           padding: '0.5vw',
-          borderBottom: '1px solid #fff'
+          borderBottom: '1px solid #fff',
+          margin : '0',
         }}
       >
         <Stack
@@ -62,7 +63,6 @@ export function Menu() {
         >
           {context.signed ? (
             <Button
-              color='primary'
               variant="contained"
               endIcon={<LogoutIcon />}
               onClick={logout}>

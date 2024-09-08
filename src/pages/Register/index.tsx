@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
-import { ThemeProvider } from '@mui/material';
 import { useState } from 'react';
 import { InputTextField } from '../../components/Inputs/InputTextField';
 import InputPassword from '../../components/Inputs/InputPassword';
-import { Menu } from '../../components/Menu';
-import { theme } from '../../Theme';
 import { AuthContext } from '../../contexts/auth';
 import { LoadingButton } from '@mui/lab';
+import Container from '../../components/Container';
 
-interface ErrorsValidation {
+interface ErrorsValidationRegister {
   email?: string;
   name?: string;
   password?: string;
@@ -20,7 +18,7 @@ export const Register = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [errorsValidation, setErrorsValidation] = useState<ErrorsValidation>({});
+  const [errorsValidation, setErrorsValidation] = useState<ErrorsValidationRegister>({});
   const [loading, setLoading] = React.useState(false);
 
   const context = useContext(AuthContext);
@@ -50,8 +48,7 @@ export const Register = () => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Menu />
+    <Container>
       <div style={{ width: '20%', margin: '10vh auto', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
         <InputTextField
           onChange={setEmail}
@@ -86,6 +83,6 @@ export const Register = () => {
         </p>
 
       </div>
-    </ThemeProvider>
+    </Container>
   )
 }
