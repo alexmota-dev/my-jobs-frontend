@@ -19,7 +19,7 @@ export function InputTextField({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilled(event.target.value !== "");
-    onChange(event.currentTarget.value)
+    onChange(event.currentTarget.value);
   };
 
   return (
