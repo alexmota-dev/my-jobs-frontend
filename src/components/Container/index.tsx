@@ -1,7 +1,7 @@
-import { ThemeProvider } from '@emotion/react'
-import { ReactNode } from 'react'
-import { theme } from '../../Theme'
-import { Menu } from '../Menu';
+import { ThemeProvider } from "@emotion/react";
+import { ReactNode } from "react";
+import { theme } from "../../Theme";
+import { Menu } from "../Menu";
 
 interface ContainerProps {
   children: ReactNode;
@@ -11,30 +11,30 @@ const Container = ({ children }: ContainerProps) => {
   return (
     <ThemeProvider theme={theme}>
       <div
-        className='container'
+        className="container"
         style={{
-          backgroundColor: 'white',
-          height: '100vh', 
-          width: '100vw',
-          display: 'flex',
-          flexDirection: 'column',
-          margin: '0', 
-        }}>
+          backgroundColor: "white",
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+          flexDirection: "column",
+          margin: "0",
+        }}
+      >
         <Menu />
 
-        <div 
-          className='content'
+        <div
+          className="content"
           style={{
-            display: 'flex',
-            padding: '0.5vw'
-          }}>
+            display: "flex",
+            padding: "0.5vw",
+          }}
+        >
           {children}
         </div>
-
       </div>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-
-export default Container
+export default Container;

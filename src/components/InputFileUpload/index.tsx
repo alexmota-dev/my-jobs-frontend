@@ -1,18 +1,19 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import * as React from "react";
+import { ComponentProps } from 'react';
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
   height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
+  overflow: "hidden",
+  position: "absolute",
   bottom: 0,
   left: 0,
-  whiteSpace: 'nowrap',
+  whiteSpace: "nowrap",
   width: 1,
 });
 
@@ -21,8 +22,7 @@ interface InputFileUploadProps {
   disabled?: boolean;
 }
 
-// Estilização personalizada do Tooltip
-const CustomTooltip = styled(({ className, ...props }: any) => (
+const CustomTooltip = styled(({ className, ...props }: ComponentProps<typeof Tooltip>) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
@@ -34,7 +34,10 @@ const CustomTooltip = styled(({ className, ...props }: any) => (
   },
 }));
 
-export const InputFileUpload: React.FC<InputFileUploadProps> = ({ onFileChange, disabled }) => {
+export const InputFileUpload: React.FC<InputFileUploadProps> = ({
+  onFileChange,
+  disabled,
+}) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       onFileChange(event.target.files[0]);
