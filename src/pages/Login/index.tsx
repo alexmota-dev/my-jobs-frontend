@@ -1,18 +1,22 @@
 import React, { useContext } from 'react';
-import { ThemeProvider } from '@mui/material';
 import { useState } from 'react';
 import { InputTextField } from '../../components/Inputs/InputTextField';
 import InputPassword from '../../components/Inputs/InputPassword';
-import { Menu } from '../../components/Menu';
-import { theme } from '../../Theme';
 import { AuthContext } from '../../contexts/auth';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Container from '../../components/Container';
+
+interface ErrorsValidationLogin {
+  email?: string;
+  password?: string;
+  // adicionar outras proprieades aqui depois
+}
 
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [errorsValidation, setErrorsValidation] = useState<any>({});
+  const [errorsValidation, setErrorsValidation] = useState<ErrorsValidationLogin>({});
   const [loading, setLoading] = React.useState(false);
 
   const context = useContext(AuthContext);
@@ -22,22 +26,29 @@ export const Login = () => {
 
   async function login() {
     setLoading(true);
-    setLoading(false);
-    try{
-      await context.login({email, password});
+    try {
+      await context.login({ email, password });
       setLoading(false);
-
-    }catch(e){
+    } catch (e: unknown) {
       setError('');
       setLoading(false);
-      setErrorsValidation(e);
+  
+      if (e instanceof Error) {
+        // Verifica se o erro é uma instância de Error e passa a mensagem ou qualquer outro dado relevante
+        setErrorsValidation({
+          email: e.message.includes('email') ? 'Invalid email' : undefined,
+          password: e.message.includes('password') ? 'Invalid password' : undefined,
+        });
+      } else {
+        console.log('Erro não identificado');
+      }
+  
       console.log(e);
     }
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Menu />
+    <Container>
       <div style={{ width: '20%', margin: '10vh auto', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
         <InputTextField
           onChange={setEmail}
@@ -48,10 +59,11 @@ export const Login = () => {
           error={errorsValidation.password}/>
         {error && <span style={{color: 'red'}}>{error}</span>}
         <LoadingButton
+          variant="outlined"
           size="small"
           onClick={login}
           loading={loading}
-          style={{backgroundColor: '#fff', width: '50%', marginTop: '2vh'}}
+          style={{backgroundColor: '#fff1', width: '50%', marginTop: '2vh'}}
         >
           Entrar
         </LoadingButton>
@@ -67,6 +79,6 @@ export const Login = () => {
           Esqueceu sua senha?
         </p>
       </div>
-    </ThemeProvider>
+    </Container>
   )
 }
