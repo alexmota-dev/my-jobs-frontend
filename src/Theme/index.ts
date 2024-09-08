@@ -1,7 +1,7 @@
-import { createTheme, alpha, getContrastRatio } from '@mui/material/styles';
+import { createTheme, alpha, getContrastRatio } from "@mui/material/styles";
 
-const violetBBase = '#181661';
-const redBase = '#d32f2f';
+const violetBBase = "#181661";
+const redBase = "#d32f2f";
 const violetMain = alpha(violetBBase, 0.7);
 const redMain = alpha(redBase, 0.7);
 const mainBase = redBase;
@@ -13,7 +13,8 @@ export const theme = createTheme({
       main: main,
       light: alpha(mainBase, 0.5),
       dark: alpha(mainBase, 0.9),
-      contrastText: getContrastRatio(violetMain, '#fff') > 4.5 ? '#fff' : '#111',
+      contrastText:
+        getContrastRatio(violetMain, "#fff") > 4.5 ? "#fff" : "#111",
     },
   },
 });

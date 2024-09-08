@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/auth';
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../contexts/auth";
 
 interface PrivateRouteProps {
   element: React.ComponentType;

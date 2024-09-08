@@ -63,7 +63,6 @@ export default function PostCard({
           justifyContent: "space-between",
         }}
       >
-
         <Button
           size="small"
           color="primary"
