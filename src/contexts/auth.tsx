@@ -35,30 +35,70 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   async function login(userData: UserLogin) {
-    const response = await api.post("/auth/login", userData);
+    // const response = await api.post("/auth/login", userData);
 
-    if (response.status !== 200) return response.data;
-    if (response.status === 200 && response.data) {
-      setUser(response.data.user);
-      api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+    //Remover responseMock apos integração
+    const responseMock = new Promise<{ data: any; status: number }>((resolve) => {
+      setTimeout(() => {
+        resolve({
+          data: {
+            user: {
+              id: 1,
+              email: userData.email,
+              password: userData.password
+            },
+            token: "test"
+          },
+          status: 200
+        });
+      }, 1000);
+    });
 
-      sessionStorage.setItem("@App:user", JSON.stringify(response.data.user));
-      sessionStorage.setItem("@App:token", response.data.token);
+    const responseMock2 = await responseMock;
+
+    if (responseMock2.status !== 200) return responseMock2.data;
+    if (responseMock2.status === 200 && responseMock2.data) {
+      setUser(responseMock2.data.user);
+      api.defaults.headers.Authorization = `Bearer ${responseMock2.data.token}`;
+
+      sessionStorage.setItem("@App:user", JSON.stringify(responseMock2.data.user));
+      sessionStorage.setItem("@App:token", responseMock2.data.token);
     }
   }
 
   async function register(userData: UserRegister) {
-    const response = await api.post("/auth/register", userData);
+  //const response = await api.post("/auth/register", userData);
 
-    if (response.status !== 200) return response.data;
-    if (response.status === 200 && response.data) {
-      setUser(response.data.user);
-      api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+  console.log("userData - register", userData);
 
-      sessionStorage.setItem("@App:user", JSON.stringify(response.data.user));
-      sessionStorage.setItem("@App:token", response.data.token);
-    }
+  const responseMock = new Promise<{ data: any; status: number }>((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: {
+          user: {
+            id: 1,
+            name: userData.name,
+            email: userData.email,
+            password: userData.password
+          },
+          token: "test"
+        },
+        status: 200
+      });
+    }, 1000);
+  });
+
+  const responseMock2 = await responseMock;
+
+  if (responseMock2.status !== 200) return responseMock2.data;
+  if (responseMock2.status === 200 && responseMock2.data) {
+    setUser(responseMock2.data.user);
+    api.defaults.headers.Authorization = `Bearer ${responseMock2.data.token}`;
+
+    sessionStorage.setItem("@App:user", JSON.stringify(responseMock2.data.user));
+    sessionStorage.setItem("@App:token", responseMock2.data.token);
   }
+}
 
   function logout() {
     setUser(null);
