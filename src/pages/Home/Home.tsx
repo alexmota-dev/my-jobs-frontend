@@ -1,49 +1,36 @@
 import { useEffect, useState } from "react";
 import Container from "../../components/Container";
-import { findAll, remove } from "../../services/book";
-import { useNavigate } from "react-router-dom";
-import ListOfPosts from "../../components/ListOfPosts";
-
-interface post {
-  id: string;
-  title: string;
-  storyline: string;
-  url: string;
-}
+// import { useNavigate } from "react-router-dom";
+import ListOfProfiles from "../../components/ListOfProfiles";
+import { Users } from "../../services/types/Users";
+import { userService } from "../../services/users";
 
 export default function Home() {
-  const [posts, setPosts] = useState<post[]>([]);
-  const navigate = useNavigate();
+  const [users, setUsers] = useState<Users[]>([]);
+  // const navigate = useNavigate();
 
-  const handleListPost = async () => {
-    const findposts = await findAll();
-    setPosts(findposts);
-  };
-
-  const handleDelete = async (id: string) => {
-    const response = await remove(id);
-
-    if (response != null && response.status === 204) {
-      setPosts(posts.filter((post) => post.id !== id));
-    }
-  };
-
-  const handleUpdate = async (id: string) => {
-    navigate(`/update-book/${id}`);
+  const handleLisUsers = async () => {
+    const findUsers = await userService.findAll();
+    setUsers(findUsers);
   };
 
   useEffect(() => {
-    handleListPost();
+    handleLisUsers();
   }, []);
 
   return (
     <Container>
-      <ListOfPosts
-        key={posts.length}
-        posts={posts}
-        handleDelete={handleDelete}
-        handleUpdate={handleUpdate}
-      />
+      <div
+        className="home"
+        style={{
+          height: "100%",
+          width: "100%",
+        }}>
+        <ListOfProfiles
+          key={users.length}
+          users={users}
+        />
+      </div>
     </Container>
   );
 }

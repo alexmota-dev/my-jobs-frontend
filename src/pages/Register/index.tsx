@@ -6,6 +6,8 @@ import { AuthContext } from "../../contexts/auth";
 import { LoadingButton } from "@mui/lab";
 import Container from "../../components/Container";
 import { useNavigate } from "react-router-dom";
+import BasicSelect from "../../components/Selects/BasicSelect";
+import { SelectChangeEvent } from "@mui/material";
 
 interface ErrorsValidationRegister {
   email?: string;
@@ -18,10 +20,15 @@ export const Register = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [category, setCategory] = useState("");
   const [error, setError] = useState("");
   const [errorsValidation, setErrorsValidation] =
     useState<ErrorsValidationRegister>({});
   const [loading, setLoading] = React.useState(false);
+
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    setCategory(event.target.value);
+  };
 
   const context = useContext(AuthContext);
   const navigate = useNavigate();
@@ -29,7 +36,7 @@ export const Register = () => {
   async function register() {
     setLoading(true);
     try {
-      await context.register({ email, password, name });
+      await context.register({ email, password, name, category });
       setLoading(false);
     } catch (e: unknown) {
       setError("");
@@ -64,15 +71,20 @@ export const Register = () => {
           label="Digite seu email"
           error={errorsValidation.email}
         />
+
         <InputTextField
           onChange={setName}
           label="Digite seu nome"
           error={errorsValidation.name}
         />
+
         <InputPassword
           onChange={setPassword}
           error={errorsValidation.password}
         />
+
+        <BasicSelect onChange={handleSelectChange} />
+
         {error && <span style={{ color: "red" }}>{error}</span>}
         <LoadingButton
           variant="outlined"
