@@ -3,12 +3,16 @@ import { UserLogin } from "../services/types/UserLogin";
 import { api } from "../api";
 import { UserRegister } from "../services/types/UserRegister";
 import { defaults } from "./apiDefaults";
+import { authService } from "../services/auth";
+import { ResponseLogin } from "../services/types/response/ResponseLogin";
+import { UserLoginResponse } from "../services/types/UserLoginResponse";
+import { ResponseRegister } from "../services/types/response/ResponseRegister";
 
 interface AuthContextData {
   signed: boolean;
   user: object | null;
-  login: (userData: UserLogin) => Promise<void>;
-  register: (userData: UserRegister) => Promise<void>;
+  login: (userData: UserLogin) => Promise<ResponseLogin | void>;
+  register: (userData: UserRegister) => Promise<ResponseRegister |void>;
   logout: () => void;
   // register: (name:string, email: string, password:string) => Promise<any>;
 }
@@ -22,7 +26,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<object | null>(null);
+  const [user, setUser] = useState<UserLoginResponse | null>(null);
 
   useEffect(() => {
     const storagedUser = sessionStorage.getItem("@App:user");
@@ -35,70 +39,48 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   async function login(userData: UserLogin) {
-    // const response = await api.post("/auth/login", userData);
+    const response = await authService.login(userData.email, userData.password);
 
-    //Remover responseMock apos integração
-    const responseMock = new Promise<{ data: any; status: number }>((resolve) => {
-      setTimeout(() => {
-        resolve({
-          data: {
-            user: {
-              id: 1,
-              email: userData.email,
-              password: userData.password
-            },
-            token: "test"
-          },
-          status: 200
-        });
-      }, 1000);
-    });
+    if (response.status && response.status !== 200) {
+      return response;
+    }
 
-    const responseMock2 = await responseMock;
+    if (isResponseLogin(response)) {
+      if (response.user) {
+        setUser(response.user);
+        api.defaults.headers.Authorization = `Bearer ${response.token}`;
 
-    if (responseMock2.status !== 200) return responseMock2.data;
-    if (responseMock2.status === 200 && responseMock2.data) {
-      setUser(responseMock2.data.user);
-      api.defaults.headers.Authorization = `Bearer ${responseMock2.data.token}`;
-
-      sessionStorage.setItem("@App:user", JSON.stringify(responseMock2.data.user));
-      sessionStorage.setItem("@App:token", responseMock2.data.token);
+        sessionStorage.setItem("@App:user", JSON.stringify(response.user));
+      }
+    } else {
+      // Handle the case when the response is not of type ResponseLogin
     }
   }
 
-  async function register(userData: UserRegister) {
-  //const response = await api.post("/auth/register", userData);
-
-  console.log("userData - register", userData);
-
-  const responseMock = new Promise<{ data: any; status: number }>((resolve) => {
-    setTimeout(() => {
-      resolve({
-        data: {
-          user: {
-            id: 1,
-            name: userData.name,
-            email: userData.email,
-            password: userData.password
-          },
-          token: "test"
-        },
-        status: 200
-      });
-    }, 1000);
-  });
-
-  const responseMock2 = await responseMock;
-
-  if (responseMock2.status !== 200) return responseMock2.data;
-  if (responseMock2.status === 200 && responseMock2.data) {
-    setUser(responseMock2.data.user);
-    api.defaults.headers.Authorization = `Bearer ${responseMock2.data.token}`;
-
-    sessionStorage.setItem("@App:user", JSON.stringify(responseMock2.data.user));
-    sessionStorage.setItem("@App:token", responseMock2.data.token);
+  function isResponseLogin(response: any): response is ResponseLogin {
+    return "token" in response;
   }
-}
+
+  async function register(userData: UserRegister) {
+    const response = await api.post("/users/register", userData);
+
+    console.log("RESPONSE REGISTER");
+    console.log(response);
+
+    if (response.status && response.status !== 201) {
+      return response;
+    }
+
+    if (isResponseRegister(response)) {
+      if (response) {
+        return response;
+      }
+    }
+  }
+
+  function isResponseRegister(response: any): response is ResponseRegister {
+    return "user" in response;
+  }
 
   function logout() {
     setUser(null);
