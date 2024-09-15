@@ -28,6 +28,7 @@ const Container = ({ children }: ContainerProps) => {
           style={{
             display: "flex",
             padding: "0.5vw",
+            backgroundColor: "white",
           }}
         >
           {children}
