@@ -1,16 +1,36 @@
+import { api } from "../../api";
 import { Category } from "../types/Category";
 
-export const categories: Category[] = [
+const categoriesMock: Category[] = [
   {
     id: 1,
-    name: "Tecnologia"
+    nome: "Tecnologia"
   },
   {
     id: 2,
-    name: "Culinária"
+    nome: "Culinária"
   },
   {
     id: 3,
-    name: "Saúde"
+    nome: "Saúde"
   },
 ]
+
+const findAll = async () => {
+ const { data } = await api.get("/categories/list");
+
+  // Mapeando os dados para garantir que estão no formato correto
+  const formattedData: Category[] = data.categories.map((category: any) => ({
+    id: category.id,
+    nome: category.nome,
+    createdAt: category.createdAt,
+    updatedAt: category.updatedAt,
+  }));
+
+  return formattedData;
+};
+
+export const categoryService = {
+  categoriesMock,
+  findAll
+}

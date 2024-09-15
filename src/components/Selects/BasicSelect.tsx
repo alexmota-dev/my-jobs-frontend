@@ -3,13 +3,23 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { categories } from "../../services/categories";
+import { categoryService } from "../../services/categories";
+import { Category } from "../../services/types/Category";
 
 interface BasicSelectProps {
   onChange: (event: SelectChangeEvent<string>) => void;
+  categories?: Category[]; // Altere para categories se preferir
 }
 
-export default function BasicSelect({ onChange }: BasicSelectProps) {
+export default function BasicSelect({
+  onChange,
+  categories,
+}: BasicSelectProps) {
+
+  if (categories == null) {
+    categories = categoryService.categoriesMock;
+  }
+
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -21,11 +31,8 @@ export default function BasicSelect({ onChange }: BasicSelectProps) {
           onChange={onChange}
         >
           {categories.map((category) => (
-            <MenuItem
-              key={category.id}
-              value={category.id}
-            >
-              {category.name}
+            <MenuItem key={category.id} value={category.id}>
+              {category.nome}
             </MenuItem>
           ))}
         </Select>

@@ -3,4 +3,5 @@ export type UserRegister = {
   password: string,
   name: string,
   category: string,
+  error?: unknown,
 };

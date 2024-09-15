@@ -9,13 +9,13 @@ export default function Home() {
   const [users, setUsers] = useState<Users[]>([]);
   // const navigate = useNavigate();
 
-  const handleLisUsers = async () => {
+  const handleListUsers = async () => {
     const findUsers = await userService.findAll();
     setUsers(findUsers);
   };
 
   useEffect(() => {
-    handleLisUsers();
+    handleListUsers();
   }, []);
 
   return (

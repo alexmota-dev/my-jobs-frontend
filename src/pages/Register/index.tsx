@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { InputTextField } from "../../components/Inputs/InputTextField";
 import InputPassword from "../../components/Inputs/InputPassword";
@@ -8,12 +8,13 @@ import Container from "../../components/Container";
 import { useNavigate } from "react-router-dom";
 import BasicSelect from "../../components/Selects/BasicSelect";
 import { SelectChangeEvent } from "@mui/material";
+import { categoryService } from "../../services/categories";
+import { Category } from "../../services/types/Category";
 
 interface ErrorsValidationRegister {
   email?: string;
   name?: string;
   password?: string;
-  // adicionar outras proprieades aqui depois
 }
 
 export const Register = () => {
@@ -25,25 +26,37 @@ export const Register = () => {
   const [errorsValidation, setErrorsValidation] =
     useState<ErrorsValidationRegister>({});
   const [loading, setLoading] = React.useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     setCategory(event.target.value);
   };
 
+  const handleListCategories = async () => {
+    const findCategories = await categoryService.findAll();
+    setCategories(findCategories);
+  };
+  
   const context = useContext(AuthContext);
   const navigate = useNavigate();
 
   async function register() {
     setLoading(true);
     try {
-      await context.register({ email, password, name, category });
+      const response = await context.register({ email, password, name, category });
       setLoading(false);
+
+      if(response?.error) {
+        setError("");
+      }
+      else{
+        navigate("/login");
+      }
     } catch (e: unknown) {
       setError("");
       setLoading(false);
 
       if (e instanceof Error) {
-        // Verifica se o erro é uma instância de Error e passa a mensagem ou qualquer outro dado relevante
         setErrorsValidation({
           email: e.message.includes("email") ? "Invalid email" : undefined,
           name: e.message.includes("name") ? "Invalid name" : undefined,
@@ -54,6 +67,10 @@ export const Register = () => {
       }
     }
   }
+
+  useEffect(() => {
+    handleListCategories();
+  }, []);
 
   return (
     <Container>
@@ -83,7 +100,9 @@ export const Register = () => {
           error={errorsValidation.password}
         />
 
-        <BasicSelect onChange={handleSelectChange} />
+        <BasicSelect
+          onChange={handleSelectChange}
+          categories={categories}/>
 
         {error && <span style={{ color: "red" }}>{error}</span>}
         <LoadingButton

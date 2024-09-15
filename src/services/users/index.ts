@@ -1,3 +1,6 @@
+import { api } from "../../api";
+import { Experience } from "../types/Experience";
+import { Users } from "../types/Users";
 import mockUsers from "./mockUsers";
 
 export type DTOCreateUser = {
@@ -32,17 +35,19 @@ const findById = async (id: number) => {
 };
 
 const findAll = async () => {
-  return new Promise<
-    {
-      id: number;
-      name: string;
-      email: string;
-      description: string;
-      category: string;
-    }[]
-  >((resolve) => {
-    resolve(mockUsers);
-  });
+
+  const { data } = await api.get(`/users/list`);
+
+  const formattedData: Users[] = data.map((user: any) => ({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    description: user.description,
+    experiences: user.experiences as Experience[],
+    category: user.category
+  }));
+
+  return formattedData;
 };
 
 export const userService = {
