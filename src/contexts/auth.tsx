@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const storagedUser = sessionStorage.getItem("@App:user");
     const storagedToken = sessionStorage.getItem("@App:token");
-
+    
     if (storagedToken && storagedUser) {
       setUser(JSON.parse(storagedUser));
       defaults.headers.Authorization = `Bearer ${storagedToken}`;
@@ -40,6 +40,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   async function login(userData: UserLogin) {
     const response = await authService.login(userData.email, userData.password);
+
+    console.log("RESPONSE LOGIN DIRETO DO CONTEXT");
+    console.log(response);
 
     if (response.status && response.status !== 200) {
       return response;
@@ -51,6 +54,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         api.defaults.headers.Authorization = `Bearer ${response.token}`;
 
         sessionStorage.setItem("@App:user", JSON.stringify(response.user));
+        sessionStorage.setItem("email", JSON.stringify(response.user.email));
+        sessionStorage.setItem("name", JSON.stringify(response.user.name));
       }
     } else {
       // Handle the case when the response is not of type ResponseLogin
@@ -86,6 +91,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser(null);
     sessionStorage.removeItem("@App:user");
     sessionStorage.removeItem("@App:token");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("name");
+
   }
 
   return (

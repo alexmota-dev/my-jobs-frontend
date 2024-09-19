@@ -15,6 +15,15 @@ import { About } from "../pages/About";
 const Routes: React.FC = () => {
   const { signed } = useContext(AuthContext);
 
+  if(signed){
+    console.log("Usuario logado");
+
+  }
+
+  if(!signed){
+    console.log("Usuario não logado");
+  }
+
   // Defina as rotas assinadas e outras rotas corretamente
   const signedRoutes = createBrowserRouter([
     { path: "/", element: <Home /> },

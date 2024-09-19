@@ -1,95 +1,58 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Users } from "../../services/types/Users";
+import { useState } from "react";
+import { userService } from "../../services/users";
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
+export default function RecipeReviewCard({ user }: { user: Users }) {
+  const [isFavorite, setIsFavorite] = useState(false); // Estado para controlar se é favorito ou não
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+  const handleFavoriteClick = async (userId: number, friendId: number) => {
+    setIsFavorite(!isFavorite);
+    
+      const response = await userService.friendshipRequest(userId, friendId);
+      console.log(response);
 
-export default function RecipeReviewCard({
-  user,
-}: {
-  user: Users
-}) {
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+    
   };
 
   return (
-      <Card sx={{ maxWidth: 345, margin: "1vw" }}>
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              {user.name.replace(/\s+/g, "").substring(0, 1)}
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={user.name}	
-          subheader={user.email}
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {user.description}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
+    <Card sx={{ maxWidth: 345, margin: "1vw" }}>
+      <CardHeader
+        avatar={
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            {user.name.replace(/\s+/g, "").substring(0, 1)}
+          </Avatar>
+        }
+        action={
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
           </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          {user.experiences?.map((experience) => (
-            <CardContent>
-              <Typography paragraph>
-                {experience.title}
-              </Typography>
-              <Typography paragraph>
-                {experience.description}
-              </Typography>
-            </CardContent>
-          ))}
-        </Collapse>
-      </Card>
+        }
+        title={user.name}
+        subheader={user.email}
+      />
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {user.description}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <IconButton
+          aria-label="add to favorites"
+          onClick={() => handleFavoriteClick(1, user.id)} 
+        >
+          <FavoriteIcon  color={isFavorite ? "error" : "disabled"} />
+        </IconButton>
+      </CardActions>
+    </Card>
   );
 }
